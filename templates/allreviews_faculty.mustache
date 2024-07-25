@@ -1,0 +1,53 @@
+   '<a class="accent-blue font-13" style="font-weight: 600;" id="download" href="{{&downloadurl}}"> <img src="pix/download-bold.svg" alt="" class="mr-2">Download CSV </a>';
+<div class="table-responsive">
+   <table class="table assignment-approval-table">
+      <thead class="thead">
+         <tr style="white-space: nowrap">
+            <th scope="col" data-column="coursename"  class="sortable" >Course name<span></span></th>
+            <th scope="col" class="sortable" data-column="activityname" ><span>Activity Details</span></th>
+            <th scope="col"  ><span>Activity Type</span></th>
+            <th scope="col" class="sortable" data-column="learnername"><span>Learner Name</span></th>
+            <th scope="col" class="sortable" data-column="idnumber" ><span>Id number</span></th>
+            <th scope="col" class="sortable" data-column="group" ><span>Group</span></th>
+            <th scope="col" class="sortable" data-column="email"><span>Email address</span></th>
+            <th scope="col" class="sortable" data-column="assignmentdue"><span>Assignment Due Date</span></th>
+            <th scope="col" class="sortable" data-column="assignsubmited"><span>Submitted Date</span></th>
+            <th scope="col" class="sortable">Action</span></th>
+         </tr>
+      </thead>
+      <tbody class = "sorted_data">
+        {{#activity}}
+         <tr style="white-space: nowrap">
+            <td title="{{&course_name}}"><a href="{{courseurl}}" target="_blank">{{&course_name}}</td>
+            <td title="{{&name}}"><a href="{{activityurl}}">{{&name}}</td>
+            <td>
+             Assignment
+            </td>
+            <td><a href="{{userurl}}" target="_blank">{{username}}</td>
+            <td  class="text-danger font-weight-bold">{{\p}}</td>
+            <td >{{groupname}}</td>
+            <td>
+            {{useremail}}  
+            </td>
+            <td>
+               {{assignmentduedate}}
+            </td>
+            <td class="">{{assignsubmitted}}
+               </td>
+            <td class="">
+               </td>
+            <td><a href="{{&gradeurl}}" class="d-flex align-items-center w-100 ">
+                <span class="d-block font-12 text-right accent-blue font-w-600">Grade now 
+            </span>
+            <i class="fa fa-angle-right ml-1 d-inline-block font-13 font-weignt-bolder" style="color: #006fcb !important;"></i>
+            </a> 
+            </td>
+
+         </tr>
+        {{/activity}}
+       
+      </tbody>
+   </table>
+            </div>
+<div class="custom-modal">
+</div>

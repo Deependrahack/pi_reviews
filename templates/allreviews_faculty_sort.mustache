@@ -1,0 +1,29 @@
+        {{#activity}}
+         <tr style="white-space: nowrap">
+            <td title="{{&course_name}}"><a href="{{courseurl}}" target="_blank">{{&course_name}}</td>
+            <td title="{{&name}}"><a href="{{activityurl}}">{{&name}}</td>
+            <td>
+             Assignment
+            </td>
+            <td><a href="{{userurl}}" target="_blank">{{username}}</td>
+            <td  class="text-danger font-weight-bold">{{review}}</td>
+            <td >{{groupname}}</td>
+            <td>
+            {{useremail}}  
+            </td>
+            <td>
+               {{assignmentduedate}}
+            </td>
+            <td class="">{{assignsubmitted}}
+               </td>
+            <td class="">
+               </td>
+            <td><a href="{{&gradeurl}}" class="d-flex align-items-center w-100 ">
+                <span class="d-block font-12 text-right accent-blue font-w-600">Grade now 
+            </span>
+            <i class="fa fa-angle-right ml-1 d-inline-block font-13 font-weignt-bolder" style="color: #006fcb !important;"></i>
+            </a> 
+            </td>
+
+         </tr>
+        {{/activity}}
