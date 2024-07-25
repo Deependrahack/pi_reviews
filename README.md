@@ -1,8 +1,4 @@
-# Vlearn Statistics #
 
-TODO Describe the plugin shortly here.
-
-TODO Provide more detailed description here.
 
 ## Installing via uploaded ZIP file ##
 
@@ -16,7 +12,7 @@ TODO Provide more detailed description here.
 
 The plugin can be also installed by putting the contents of this directory to
 
-    {your/moodle/dirroot}/blocks/vlearn_activities
+    {your/moodle/dirroot}/blocks/pi_reviews
 
 Afterwards, log in to your Moodle site as an admin and go to _Site administration >
 Notifications_ to complete the installation.
@@ -29,8 +25,7 @@ to complete the installation from the command line.
 
 ## License ##
 
-2022 Sudhanshu Gupta <sudhanshu.gupta@herovired.com>
-
+2024 Deependra singh <deepcs20@gmail.com>
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
 Foundation, either version 3 of the License, or (at your option) any later
