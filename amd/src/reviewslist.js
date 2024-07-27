@@ -22,6 +22,17 @@ define([
         if (courseid === "Course") {
           courseid = "";
         }
+        var search  = '';
+        if(activityname.trim() !== ''){
+            search = "&search="+activityname;
+        }
+         var csearch = "";
+        if(courseid.trim() !== ''){
+            csearch = "&cid="+courseid;
+        }
+        var hrefValue = $('#download').attr('acturalurl');
+        hrefValue = hrefValue + search +csearch;
+         $('#download').attr('href', hrefValue);
         var sort = get_sorting_column();
         var column = sort.column;
         var duesorting = sort.order;
@@ -71,6 +82,74 @@ define([
                         if (courseid === "Course") {
                             courseid = "";
                         }
+                        var search  = '';
+                        if(activityname.trim() !== ''){
+                            search = "&search="+activityname;
+                        }
+                         var csearch = "";
+                        if(courseid.trim() !== ''){
+                            csearch = "&cid="+courseid;
+                        }
+                        var hrefValue = $('#download').attr('acturalurl');
+                        hrefValue = hrefValue + search +csearch;
+                         $('#download').attr('href', hrefValue);
+                        var sort = get_sorting_column();
+                        var column = sort.column;
+                        var duesorting = sort.order;
+                            var WAITICON = {
+                                pix: M.util.image_url("i/loading", "core"),
+                                component: "moodle",
+                            };
+                            var loader = $('<img style="display: block;margin: 100px auto" />')
+                                    .attr("src", M.util.image_url(WAITICON.pix, WAITICON.component))
+                                    .addClass("spinner");
+                            $(".sorted_data").html(
+                                    '<tr> <td colspan="8">' + loader.get(0).outerHTML + "</td></tr>"
+                                    );
+                            var promises = ajax.call([
+                                {
+                                    methodname: "block_pi_reviews_get_reviews",
+                                    args: {
+                                        cid: courseid,
+                                        search: activityname,
+                                        column: column,
+                                        page: page,
+                                        duesorting: duesorting,
+                                    },
+                                },
+                            ]);
+                            promises[0]
+                                    .done(function (data) {
+                                        $(".sorted_data").html(data.displayhtml);
+                                        $(".pagination-nav-filter").html(data.pagedata);
+                                    })
+                                    .fail(notification.exception);
+                    }, 1000)
+                    );
+     
+            $(document).on(
+                    "change",
+                    ".coursesearch",
+                    delay(function (e) {
+                        e.preventDefault();
+                        var page_val = window.location.href;
+                        var page = getURLParameter("page", page_val);
+                        var activityname = $(".activity-search").val();
+                        var courseid = $("#coursesearch_id").find(":selected").val();
+                        if (courseid === "Course") {
+                            courseid = "";
+                        }
+                        var search  = '';
+                        if(activityname.trim() !== ''){
+                            search = "&search="+activityname;
+                        }
+                         var csearch = "";
+                        if(courseid.trim() !== ''){
+                            csearch = "&cid="+courseid;
+                        }
+                        var hrefValue = $('#download').attr('acturalurl');
+                        hrefValue = hrefValue + search +csearch;
+                         $('#download').attr('href', hrefValue);
                         var sort = get_sorting_column();
                         var column = sort.column;
                         var duesorting = sort.order;
