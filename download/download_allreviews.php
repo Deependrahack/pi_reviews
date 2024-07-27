@@ -11,8 +11,8 @@ require(__DIR__ . '../../../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->libdir . '/dataformatlib.php');
 $format = optional_param('dataformat', '', PARAM_TEXT);
-$programid = optional_param('pid', 0, PARAM_INT);
-$activityname = optional_param('activityname', '', PARAM_TEXT);
+$activityname = optional_param('search', '', PARAM_TEXT);
+$cid = optional_param('cid', '', PARAM_TEXT);
 require_login();
 global $DB;
 if ($format) {
@@ -27,18 +27,24 @@ if ($format) {
     $headers[] = get_string('email', 'block_pi_reviews');
     $headers[] = get_string('assignmentdue', 'block_pi_reviews');
     $headers[] = get_string('submitteddate', 'block_pi_reviews');
+    
+        $where = '';
+    if (!empty($activityname)) {
+        $where = " AND  a.name LIKE '%" . $activityname . "%'
+                      OR c.fullname LIKE '%" . $activityname . "%' 
+                      OR Concat (u.firstname,' ', u.lastname) LIKE '%" . $activityname . "%'";
+    }
     $sitecontext = context_system::instance();
     $companyreviews = new \block_pi_reviews\pi_reviews($sitecontext);
-    $courseids = $companyreviews->get_user_enrolled_courseids();
-    $cids = $courseids->cids;
-    $reviews = $companyreviews->get_assignment_reviews($cids, 0, 0);
+    if ($cid) {
+        $cids = $cid;
+    } else {
+        $courseids = $companyreviews->get_user_enrolled_courseids();
+        $cids = $courseids->cids;
+    }
+    $reviews = $companyreviews->get_assignment_reviews($cids, 0, 0, $where);
     $total_to_reviews = $reviews['totalrecord'];
     $reviews = $reviews['assignments'];
-    $where = '';
-//    if (!empty($activityname)) {
-//        $where .= " AND a.name LIKE '%" . $activityname . "%'";
-//    }
-//    $reviews = $companyreviews->get_program_reviews(0, 0, $where);
 
     $data = array();
     $i = 0;
