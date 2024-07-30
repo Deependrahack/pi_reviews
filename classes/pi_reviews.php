@@ -161,7 +161,7 @@ class pi_reviews {
         $submisisons = array();
         foreach($record as $key => $value){
             $years[] = $key;
-            $submisisons[] = $key;
+            $submisisons[] = $value;
         }
          return array($years,$submisisons);
     }
