@@ -77,8 +77,9 @@ class block_pi_reviews extends block_base {
             }
             $data['to_reviews'] = $total_to_reviews;
             if (count($reviews) >= 1) {
-            $data['allreviewsurl'] = $CFG->wwwroot.'/blocks/pi_reviews/allreviews.php';
+                $data['allreviewsurl'] = $CFG->wwwroot . '/blocks/pi_reviews/allreviews.php';
             }
+            $text .= $companyreviews->get_pi_review_chart();
             $text .= $OUTPUT->render_from_template('block_pi_reviews/reviews', $data);
             $this->content->text = $text;
         }

@@ -41,10 +41,14 @@ class pi_reviews {
         $totalrecord = 0;
         $context = \context_system::instance();
         if(is_siteadmin()){
-            $select = "SELECT rand(),asu.id, cm.id as moduleid, u.id as userid,a.name as activityname, 
+            $querycid = '';
+            if (!empty($cids)) {
+                    $querycid = ' AND c.id IN (' . $cids . ')';
+                }
+            $select = "SELECT distinct(asu.id), cm.id as moduleid, u.id as userid,a.name as activityname, 
                      asu.status, Concat (u.firstname,' ', u.lastname) as username, c.id as cid, c.fullname as coursename,
                      gps.name as groupname, u.email as useremail , a.duedate , asu.timemodified as assignsubmitted, u.idnumber ";
-            $countfields = 'SELECT COUNT(1)';
+            $countfields = 'SELECT COUNT(distinct(asu.id))';
             $sql =  " FROM {assign_submission} asu 
                      left join {assign} a on a.id = asu.assignment  
                      left join {course} c on c.id = a.course 
@@ -52,24 +56,24 @@ class pi_reviews {
                      left join {user} u on u.id = asu.userid 
                      left join {groups} gps on gps.courseid = c.id  
                      left join {groups_members} gm on gps.id = gm.groupid AND u.id = gm.userid 
-                     where asu.status = 'submitted' and (asu.id,asu.userid)  
+                     where (asu.id,asu.userid)  
                      NOT IN (SELECT assignment,userid  FROM {assign_grades})   
                      AND u.deleted =0 and u.suspended = 0 and  cm.visible =1 AND  cm.module= 1
-                      $where ";
+                      $querycid $where and asu.status = 'submitted'";
 
-            $sortsql = !empty($sort )? " ORDER by $sort" : '';
-            $assignments = @$DB->get_records_sql($select.$sql.$sortsql, $params, ($page * $perpage), $perpage);
-            $totalrecord = @$DB->count_records_sql($countfields.$sql, $params);
+            $sortsql = !empty($sort) ? " ORDER by $sort" : '';
+            $assignments = $DB->get_records_sql($select . $sql . $sortsql, $params, ($page * $perpage), $perpage);
+            $totalrecord = $DB->count_records_sql($countfields . $sql, $params);
         } else {
-            if (!empty($cids)) {
+//            if (!empty($cids)) {
                 $querycid = '';
                 if (!empty($cids)) {
                     $querycid = ' AND c.id IN (' . $cids . ')';
                 }
-                $select = "SELECT rand(),asu.id, cm.id as moduleid, u.id as userid,a.name as activityname, 
+                $select = "SELECT distinct(asu.id), cm.id as moduleid, u.id as userid,a.name as activityname, 
                      asu.status, Concat (u.firstname,' ', u.lastname) as username, c.id as cid, c.fullname as coursename,
                      gps.name as groupname, u.email as useremail , a.duedate , asu.timemodified as assignsubmitted, u.idnumber ";
-                $countfields = 'SELECT COUNT(1)';
+                $countfields = 'SELECT COUNT(distinct(asu.id))';
                 $sql = " FROM {assign_submission} asu 
                      left join {assign} a on a.id = asu.assignment  
                      left join {course} c on c.id = a.course 
@@ -80,17 +84,17 @@ class pi_reviews {
                      where asu.status = 'submitted' and (asu.id,asu.userid)  
                      NOT IN (SELECT assignment,userid  FROM {assign_grades})   
                      AND u.deleted =0 and u.suspended = 0 and  cm.visible =1 AND  cm.module= 1
-                      $querycid  $where ";
+                      $querycid  $where  and asu.status = 'submitted'";
 
                 $sortsql = !empty($sort) ? " ORDER by $sort" : '';
                 $assignments = @$DB->get_records_sql($select . $sql . $sortsql, $params, ($page * $perpage), $perpage);
                 $totalrecord = @$DB->count_records_sql($countfields . $sql, $params);
-            }
+//            }
         }
         return array('assignments' => $assignments, 'totalrecord' => $totalrecord);
     }
-    
-/*
+
+    /*
      * User enrolled courseids
      */
     public function get_user_enrolled_courseids() {
@@ -114,7 +118,7 @@ class pi_reviews {
         }
         return array();
     }
-    
+
     /*
      * get enrolled user by course
      */
@@ -135,4 +139,30 @@ class pi_reviews {
         return array();
     }
 
+    function get_pi_review_chart() {
+        global $OUTPUT, $CFG;
+        list($years, $submissions) = $this->get_years();
+        $CFG->chart_colorset = ['#777bd8'];
+        $sessions = new \core\chart_series('Total Assignments Submitted', $submissions);
+        
+        $chart5 = new \core\chart_bar();
+        $chart5->set_title('Assignment Completed');
+        $chart5->add_series($sessions);
+        $chart5->set_labels($years);
+        return $OUTPUT->render($chart5);
+    }
+    
+    public function get_years(){
+        global $DB;
+        $sql = "SELECT DATE_FORMAT(FROM_UNIXTIME(`timemodified`), '%Y') as year, count(id) as submission FROM `mdl_assign_submission`"
+                . " where status = 'submitted' group by year order by year ASC";
+        $record = $DB->get_records_sql("$sql");
+        $years = array();
+        $submisisons = array();
+        foreach($record as $key => $value){
+            $years[] = $key;
+            $submisisons[] = $key;
+        }
+         return array($years,$submisisons);
+    }
 }

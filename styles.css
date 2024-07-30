@@ -377,6 +377,8 @@ body:not(
   font-weight: 500;
   line-height: 140%;
   width: 140px;
+  margin-top: -67px;
+  margin-right: 700px;
 }
 
 #page-blocks-pi_reviews-allreviews tr:hover {
