@@ -88,9 +88,9 @@ class external extends external_api {
         }
         
         if (!empty($params['search']) ) {
-            $where = " AND  a.name LIKE '%".$params['search']."%'
+            $where = " AND  (a.name LIKE '%".$params['search']."%'
                       OR c.fullname LIKE '%".$params['search']."%' 
-                      OR Concat (u.firstname,' ', u.lastname) LIKE '%".$params['search']."%'";
+                      OR Concat (u.firstname,' ', u.lastname) LIKE '%".$params['search']."%')";
         }
         $sitecontext = context_system::instance();
         $companyreviews = new \block_pi_reviews\pi_reviews($sitecontext);

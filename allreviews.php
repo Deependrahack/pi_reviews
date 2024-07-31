@@ -46,14 +46,6 @@ echo '<div class="back_arrow_text breadcrumb-forall-pages mobile-none">
                 <a class="black-base font-13 d-block font-weight-normal" title="">Assignment To Review</a>
             </span>
     </div>';
-//echo ' <div class="back_arrow_btn breadcrumb-forall-pages desktop-none mobile-block mt-0">
-//                    <span class="d-flex justify-content-start align-items-center ">
-//                        <i class="fa fa-angle-left mr-1 black-base d-block font-18 font-w-600" style="color: #333 !important;"></i>
-//                        <a class="black-base font-16 font-w-600 d-block" href="' . $homeurl . '" title>
-//                        Back  
-//                        </a>
-//                    </span>
-//            </div>';
 echo "<div class='all-toreview-fullview-page'>";
 echo $OUTPUT->heading('Assignment To Review');
 
