@@ -71,7 +71,7 @@ class block_pi_reviews extends block_base {
                 $data['activity'][$i]['name'] = $activity->activityname;
                 $data['activity'][$i]['class'] = "assignment-btn d-flex justify-content-center align-items-center flex-row";
                 $data['activity'][$i]['src'] = $CFG->wwwroot . "/blocks/pi_reviews/pix/assignment-blue.svg";
-                $grade_params = array('id' => $activity->id, 'action' => 'grading');
+                $grade_params = array('id' => $activity->moduleid, 'action' => 'grading');
                 $data['activity'][$i]['gradeurl'] = new \moodle_url('/mod/assign/view.php', $grade_params);
                 $i++;
             }
